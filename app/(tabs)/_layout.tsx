@@ -1,37 +1,67 @@
-import { Tabs } from 'expo-router';
+import { View, Text, Image, ImageSourcePropType } from 'react-native';
 import React from 'react';
+import { Tabs } from 'expo-router';
+import { icons } from '../../constants';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+interface TabIconprops{
+    icon:ImageSourcePropType
+    color:string
+    name:string
+    focused:boolean
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+}
 
+const TabIcon:React.FC<TabIconprops> = ({ icon, color, name, focused }) => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+    <View>
+      <Image
+        source={icon}
+        resizeMode="contain"
+        style={{ tintColor: color, width: 24, height: 24 }} // Adjusted style
+      />
+      <Text style={{ color: focused ? color : 'gray' }}> {/* Adjust text color based on focus */}
+        {name}
+      </Text>
+    </View>
+  );
+};
+
+const TabsLayout = () => {
+  return (
+    <Tabs>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabIcon
+              icon={icons.home}
+              color={color}
+              name="Home"
+              focused={focused}
+            />
           ),
         }}
       />
-      <Tabs.Screen
-        name="explore"
+
+    <Tabs.Screen
+        name="bookmark"
         options={{
-          title: 'Explore',
+          title: 'Bookmark',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabIcon
+              icon={icons.bookmark}
+              color={color}
+              name="bookmark"
+              focused={focused}
+            />
           ),
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default TabsLayout;
