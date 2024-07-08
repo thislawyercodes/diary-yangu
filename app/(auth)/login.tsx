@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image, ScrollView, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, Image, ScrollView, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as SplashScreen from 'expo-splash-screen';
-import CustomText from '@/components/CustomText';
+import { StatusBar } from 'expo-status-bar';
+import CustomFormField from '@/components/CustomFormField';
 import Button from '@/components/Button';
-import { router } from 'expo-router';
-import { StatusBar } from 'expo-status-bar'
+import { login } from '@/lib/apiService';
+import { saveToken } from '@/lib/baseService';
+import { router } from 'expo-router'; // Ensure correct import for router
 import { styles } from '../styles/styles';
 import images from '@/constants/images';
-import CustomFormField from '@/components/CustomFormField';
-
-
-
 
 const Login = () => {
   const [email, setUsername] = useState('');
   const [password, setUserPassword] = useState('');
-
+  const [loading, setLoading] = useState(false);
 
   const handleUsernameChange = (text: string) => {
     setUsername(text);
@@ -26,53 +23,65 @@ const Login = () => {
     setUserPassword(text);
   };
 
-  const handleSignUpPress = () => {
-    router.push('/signup'); 
-};
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const data = await login(email, password);
+      await saveToken(data.access);
+      console.log('Login successful. Token saved:', data.token);
+      Alert.alert('Success', 'Login was successful.....');
+      router.push('/home');
+    } catch (error) {
+      console.error('Login error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleSignUpPress = () => {
+    router.push('/signup');
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView>   
-      <View style={styles.scrollViewContent}>
+      <ScrollView>
+        <View style={styles.scrollViewContent}>
+          <Image source={images.logo} resizeMode='contain' style={styles.image} />
+          <Text style={styles.loginHeader}>Login To Your Diary Yangu Account</Text>
 
-      <Image
-            source={images.logo}
-            resizeMode='contain'
-            style={styles.image}
-       />
-        <Text style={styles.loginHeader}>Login To Your Diary Yangu Account</Text>
-
-        <CustomFormField
-          title="Email"
-          placeholder="Enter your Email"
-          value={email}
-          handleChangeText={handleUsernameChange}
-          keyboardType="email-address"
-        />
           <CustomFormField
-          title="Password"
-          placeholder="Enter your password"
-          value={password}
-          handleChangeText={handleUsePassword}
-        />
+            title="Email"
+            placeholder="Enter your Email"
+            value={email}
+            handleChangeText={handleUsernameChange}
+            keyboardType="email-address"
+          />
+          <CustomFormField
+            title="Password"
+            placeholder="Enter your password"
+            value={password}
+            handleChangeText={handleUsePassword}
+          />
 
-        <Button
-          title="Login"
-          onPress={() => {
-            console.log('Login button clicked');
-            router.push('/signup');
-          }}
-          textStyle={styles.buttonText} 
-        />
-    <TouchableOpacity onPress={handleSignUpPress}>
-    <Text style={styles.registerHeader}>Don't have an Account?Register here</Text>
-    </TouchableOpacity>
+          {loading ? (
+            <ActivityIndicator size="large" color="#0000ff" />
+          ) : (
+            <Button
+              title="Login"
+              onPress={handleLogin}
+              textStyle={styles.buttonText}
+            />
+          )}
 
+          <TouchableOpacity onPress={handleSignUpPress}>
+            <Text style={styles.registerHeader}>Don't have an Account? Register here</Text>
+          </TouchableOpacity>
 
-      </View>
+        </View>
       </ScrollView>
+      <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
   );
 };
+
 export default Login;

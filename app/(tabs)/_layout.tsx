@@ -1,53 +1,24 @@
 import { View, Text, Image, ImageSourcePropType } from 'react-native';
 import React from 'react';
-import { Tabs, Redirect, Stack } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { icons } from '../../constants';
 import { StatusBar } from 'expo-status-bar';
+import { styles } from '../styles/styles';
 
-
-interface TabIconprops {
-  icon: ImageSourcePropType
-  color: string
-  name: string
-  focused: boolean
-
+interface TabIconProps {
+  icon: ImageSourcePropType;
+  color: string;
+  name: string;
+  focused: boolean;
 }
 
-const TabIcon: React.FC<TabIconprops> = ({ icon, color, name, focused }) => {
+const TabIcon: React.FC<TabIconProps> = ({ icon, color, name, focused }) => {
   return (
-    <>
-      <Stack>
-        <Stack.Screen
-          name='Home'
-          options={
-            {
-              headerShown: false,
-            }
-          }
-        />
-        <Stack.Screen
-          name='BookMark'
-          options={
-            {
-              headerShown: false,
-            }
-          }
-        />
-        <Stack.Screen
-          name='Create'
-          options={
-            {
-              headerShown: false,
-            }
-          }
-        />
-
-
-      </Stack>
-      <StatusBar backgroundColor={'#1616622'}></StatusBar>
-    </>
-
-  )
+    <View style={styles.tabIconContainer}>
+      <Image source={icon} resizeMode="contain" style={[styles.tabIcon, { tintColor: color }]} />
+      <Text style={[styles.tabIconText, { color: color }]}>{name}</Text>
+    </View>
+  );
 };
 
 const TabsLayout = () => {
@@ -55,27 +26,16 @@ const TabsLayout = () => {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: 'FFFA001',
-          tabBarInactiveTintColor: '#CDCDE0',
-          tabBarStyle: {
-            backgroundColor: '#161622',
-            borderTopWidth: 1,
-            borderTopColor: '#232533',
-            height: 84,
-
-          }
-        }
-
-
-
-        }
-
-
+          tabBarActiveTintColor: "#FFA001",
+          tabBarInactiveTintColor: "#CDCDE0",
+          tabBarShowLabel: false,
+          tabBarStyle: styles.tabBar,
+        }}
       >
         <Tabs.Screen
           name="home"
           options={{
-            title: 'Home',
+            title: "Home",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
@@ -88,54 +48,56 @@ const TabsLayout = () => {
           }}
         />
 
+
         <Tabs.Screen
-          name="bookmark"
+          name="create"
           options={{
-            title: 'Bookmark',
+            title: "Create",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                icon={icons.bookmark}
+                icon={icons.plus}
                 color={color}
-                name="bookmark"
+                name="Create"
                 focused={focused}
               />
             ),
           }}
         />
 
-        {<Tabs.Screen
-          name="create"
+        <Tabs.Screen
+          name="categories"
           options={{
-            title: 'create',
+            title: "Category",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                icon={icons.plus}
+                icon={icons.bookmark}
                 color={color}
-                name="create"
+                name="Category"
                 focused={focused}
               />
             ),
           }}
-        />}
-
-        {<Tabs.Screen
+        />
+        <Tabs.Screen
           name="profile"
           options={{
-            title: 'profile',
+            title: "Profile",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.profile}
                 color={color}
-                name="profile"
+                name="Profile"
                 focused={focused}
               />
             ),
           }}
-        />}
+        />
       </Tabs>
+
+      <StatusBar backgroundColor="#161622" style="light" />
     </>
   );
 };
