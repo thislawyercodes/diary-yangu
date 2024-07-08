@@ -1,20 +1,51 @@
-// App.tsx
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import SignInPage from '@/components/screens/sign_in_page';
-import LandingPage from '@/components/screens/landing_page';
-import {Slot,Link} from 'expo-router'
-import { View,Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Image, ScrollView, Text, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { images } from '../constants';
+import * as SplashScreen from 'expo-splash-screen';
+import CustomText from '@/components/CustomText';
+import Button from '@/components/Button';
+import { router } from 'expo-router';
+import { styles } from './styles/styles';
 
 
-const App: React.FC = () => { 
+const LandingPage = () => (
+  <SafeAreaView style={styles.safeArea}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.container}>
+        <Image
+          source={images.logo}
+          resizeMode='contain'
+          style={styles.image}
+        />
+        <CustomText style={styles.text}>
+          Ink Your Thoughts, Ignite Your Story
+        </CustomText>
+        <Button
+          title="Get Started"
+          onPress={() => {
+            console.log('Get Started button pressed');
+            router.push('/login');
+          }}
+          textStyle={styles.text}
+        />
+      </View>
+    </ScrollView>
+    <StatusBar backgroundColor='#161622' />
+  </SafeAreaView>
+);
+
+const App: React.FC = () => {
+  useEffect(() => {
+    const prepare = async () => {
+      await SplashScreen.preventAutoHideAsync();
+    };
+    prepare();
+  }, []);
+
   return (
-    <View>
-          <Text font-Black>Potato Hinges..............</Text>
-           <Link href="/Home" className="flex-1 items-center justify-center bg-white">Go back to profile</Link>
-    </View>
-  )
+    <LandingPage />
+  );
 };
 
 export default App;
