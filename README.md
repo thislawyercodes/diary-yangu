@@ -1,50 +1,46 @@
-# Welcome to your Expo app 👋
+# Journal App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a React Native app built with Expo for managing journal entries and categories. The app allows users to view, add, edit, and delete journal entries and categories.
 
-## Get started
+## Table of Contents
+- [Requirements](#requirements)
+- [Setup](#setup)
+  - [Clone the Repository](#clone-the-repository)
+  - [Install Dependencies](#install-dependencies)
+  - [Configure Environment Variables](#configure-environment-variables)
+  - [Run the App](#run-the-app)
+- [API Endpoints](#api-endpoints)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
 
-1. Install dependencies
+## Requirements
+- Node.js >= 14.x
+- Expo CLI >= 4.x
+- A running instance of the Django backend (API)
 
-   ```bash
-   npm install
-   ```
+## Setup
 
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+### Clone the Repository
 ```bash
-npm run reset-project
+git clone git@github.com:thislawyercodes/diary-yangu.git
+cd diary-yangu
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
+### Configure Environment Variables
+- Navigate to the lib directory and put the backend base url (without a trailing slash at the end)
+- If you are running the app on ios, react native may not recognize the localhost, you need to tunnel the backend base url using ngrok for instance
 
-To learn more about developing your project with Expo, look at the following resources:
+### Run the App
+- npx expo start
+- Scan the QR code with the Expo Go app on your iOS or Android device.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-## Join the community
+-Happy journaling! If you encounter any issues or have any questions, feel free to open an issue or reach out.
 
-Join our community of developers creating universal apps.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+
