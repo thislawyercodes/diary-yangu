@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, SafeAreaView, TouchableOpacity, ActivityIndicator, TextInput, Button } from 'react-native';
+import { View, Text, FlatList, SafeAreaView, TouchableOpacity, ActivityIndicator, TextInput, Button, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../styles/styles';
-import { fetchEntries } from '@/lib/apiService';
+import { editEntry, fetchEntries, deleteEntry } from '@/lib/apiService';
 import { getToken } from '@/lib/baseService';
 import { router } from 'expo-router';
 
@@ -51,13 +51,53 @@ const Home = () => {
     fetchData(startDate, endDate).finally(() => setSearchLoading(false));
   };
 
-  const handleAddEntry = () => {
-    console.log('Add entry clicked');
-    router.push('/create');
+  const handleEditEntry = async (entry: JournalEntry) => {
+    // Assuming you have a state to hold current entry data for editing
+    const [editTitle, setEditTitle] = useState(entry.title);
+    const [editContent, setEditContent] = useState(entry.content);
+    const [editCategory, setEditCategory] = useState(entry.categories.map(cat => cat.title).join(', '));
+
+    setLoading(true);
+    try {
+      const token = await getToken();
+      const entryData = { title: editTitle, content: editContent, category: editCategory };
+      const response = await editEntry(token, entry.id, entryData);
+      console.log('Entry edited successfully:', response);
+      Alert.alert('Success', 'Entry edited successfully!');
+      router.push('/home');
+    } catch (error) {
+      console.error('Error editing entry:', error);
+      Alert.alert('Error', 'Failed to edit entry. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDeleteEntry = (entryId: string) => {
-    console.log('Delete entry clicked for entryId:', entryId);
+  const confirmDeleteEntry = (entryId: string) => {
+    Alert.alert(
+      'Delete Entry',
+      'Are you sure you really want to delete this entry?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'OK', onPress: () => handleDeleteEntry(entryId) },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const handleDeleteEntry = async (entryId: string) => {
+    setLoading(true);
+    try {
+      const token = await getToken();
+      await deleteEntry(token, entryId);
+      Alert.alert('Success', 'Entry deleted successfully!');
+      fetchData(); // Refresh the list
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+      Alert.alert('Error', 'Failed to delete entry. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderEntry = ({ item }: { item: JournalEntry }) => (
@@ -81,10 +121,10 @@ const Home = () => {
         </View>
       )}
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={handleAddEntry}>
+        <TouchableOpacity onPress={() => handleEditEntry(item)}>
           <Ionicons name="pencil-outline" size={24} color="#4682B4" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleDeleteEntry(item.id)}>
+        <TouchableOpacity onPress={() => confirmDeleteEntry(item.id)}>
           <Ionicons name="trash-outline" size={24} color="#FF6347" />
         </TouchableOpacity>
       </View>
@@ -127,7 +167,7 @@ const Home = () => {
       </View>
       <FlatList
         data={entries}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         renderItem={renderEntry}
       />
     </SafeAreaView>

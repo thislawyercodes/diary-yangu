@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor:'#5F4C31',
+    backgroundColor:'#FEA001',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -43,14 +43,12 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-    backgroundColor: '#161622',
 
 },
   buttonText: {
-    color: Colors.dark.background,
     fontSize: 16,
     fontWeight: 'bold',
-    backgroundColor:'#5F4C31',
+    color:'#000',
 
   },
   loginImageContainer: {
@@ -271,7 +269,63 @@ export const styles = StyleSheet.create({
   loader: {
     marginTop: 20,
   },
-  
- 
-  
+
+
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center', 
+    color: 'white'
+  },
+
+  horizontalCategoriesContainer: {
+    flexDirection: 'row',
+    paddingBottom: 16,
+  },
+  horizontalCardContainer: {
+    backgroundColor: '#5F4C31',
+    padding: 16,
+    marginHorizontal: 8,
+    borderRadius: 8,
+    alignItems: 'center',
+    width: 150, 
+  },
+
+  categoryColorBox: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  addCategoryContainer: {
+    marginTop: 16,
+    paddingHorizontal: 16,
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+    color:'000'
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 20,
+    marginLeft:20
+  },
 });

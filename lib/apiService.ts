@@ -156,8 +156,6 @@ export const fetchCategories = async (token?: string) => {
   }
 };
 
-
-
 export const addCategory = async (token?: any, categoryDate?: any) => {
   try {
     const savedToken = await getToken();
@@ -183,5 +181,57 @@ export const addCategory = async (token?: any, categoryDate?: any) => {
   } catch (error) {
     console.error('Error adding category:', error);
     throw new Error('Error adding category');
+  }
+};
+
+
+export const editEntry = async (token?:any,id?:string, entryData?:any) => {
+  try {
+    const token = await getToken();
+    const url = `${BASE_URL}/journal/entry/${id}/`;
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(entryData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to edit entry');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error editing entry:', error);
+    throw new Error('Error editing entry');
+  }
+};
+
+
+export const deleteEntry = async (token?:any,id?:string) => {
+  try {
+    const token = await getToken();
+    const url = `${BASE_URL}/journal/entry/${id}/`;
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete entry');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting entry:', error);
+    throw new Error('Error deleting entry');
   }
 };

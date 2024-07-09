@@ -64,7 +64,7 @@ const Login = () => {
           />
 
           {loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
+            <ActivityIndicator size="large" color="#FFA001" />
           ) : (
             <Button
               title="Login"
